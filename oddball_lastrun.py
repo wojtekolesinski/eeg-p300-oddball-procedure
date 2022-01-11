@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 This experiment was created using PsychoPy3 Experiment Builder (v2021.2.3),
-    on grudzień 16, 2021, at 19:10
+    on Tue Jan 11 16:12:38 2022
 If you publish work using this script the most relevant publication is:
 
     Peirce J, Gray JR, Simpson S, MacAskill M, Höchenberger R, Sogo H, Kastman E, Lindeløv JK. (2019) 
@@ -51,7 +51,7 @@ filename = _thisDir + os.sep + u'data/%s_%s_%s' % (expInfo['participant'], expNa
 # An ExperimentHandler isn't essential but helps with data saving
 thisExp = data.ExperimentHandler(name=expName, version='',
     extraInfo=expInfo, runtimeInfo=None,
-    originPath='C:\\Users\\Usrw\\Desktop\\psychopy_oddball\\oddball_lastrun.py',
+    originPath='/Users/wojtek/UW/3/eeg/oddball/oddball_lastrun.py',
     savePickle=True, saveWideText=True,
     dataFileName=filename)
 # save a log file for detail verbose info
@@ -65,7 +65,7 @@ frameTolerance = 0.001  # how close to onset before 'same' frame
 
 # Setup the Window
 win = visual.Window(
-    size=[1366, 768], fullscr=True, screen=0, 
+    size=[1512, 982], fullscr=True, screen=0, 
     winType='pyglet', allowGUI=False, allowStencil=False,
     monitor='testMonitor', color=[0,0,0], colorSpace='rgb',
     blendMode='avg', useFBO=True, 
@@ -130,6 +130,13 @@ countdown1 = visual.TextStim(win=win, name='countdown1',
 
 # Initialize components for Routine "oddball"
 oddballClock = core.Clock()
+text_ = visual.TextStim(win=win, name='text_',
+    text='',
+    font='Open Sans',
+    pos=(0, 0), height=0.1, wrapWidth=None, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-1.0);
 image = visual.ImageStim(
     win=win,
     name='image', 
@@ -137,7 +144,7 @@ image = visual.ImageStim(
     ori=0.0, pos=(0, 0), size=(0.5, 0.5),
     color=[1,1,1], colorSpace='rgb', opacity=None,
     flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=0.0)
+    texRes=128.0, interpolate=True, depth=-2.0)
 key_resp = keyboard.Keyboard()
 blank_screen = visual.ImageStim(
     win=win,
@@ -146,7 +153,7 @@ blank_screen = visual.ImageStim(
     ori=0.0, pos=(0, 0), size=(0.5, 0.5),
     color=[1,1,1], colorSpace='rgb', opacity=None,
     flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-2.0)
+    texRes=128.0, interpolate=True, depth=-4.0)
 
 # Create some handy timers
 globalClock = core.Clock()  # to track the time since experiment started
@@ -318,7 +325,7 @@ thisExp.addData('countdown1.started', countdown1.tStartRefresh)
 thisExp.addData('countdown1.stopped', countdown1.tStopRefresh)
 
 # set up handler to look after randomisation of conditions etc
-trials = data.TrialHandler(nReps=2.0, method='random', 
+trials = data.TrialHandler(nReps=10.0, method='random', 
     extraInfo=expInfo, originPath=-1,
     trialList=data.importConditions('conditions.csv'),
     seed=None, name='trials')
@@ -338,14 +345,17 @@ for thisTrial in trials:
     
     # ------Prepare to start Routine "oddball"-------
     continueRoutine = True
-    routineTimer.add(1.100000)
     # update component parameters for each repeat
+    from numpy.random import uniform
+    
+    text_duration = uniform() * .3
+    x = .8 + uniform() * .5
     image.setImage(photo)
     key_resp.keys = []
     key_resp.rt = []
     _key_resp_allKeys = []
     # keep track of which components have finished
-    oddballComponents = [image, key_resp, blank_screen]
+    oddballComponents = [text_, image, key_resp, blank_screen]
     for thisComponent in oddballComponents:
         thisComponent.tStart = None
         thisComponent.tStop = None
@@ -360,13 +370,33 @@ for thisTrial in trials:
     frameN = -1
     
     # -------Run Routine "oddball"-------
-    while continueRoutine and routineTimer.getTime() > 0:
+    while continueRoutine:
         # get current time
         t = oddballClock.getTime()
         tThisFlip = win.getFutureFlipTime(clock=oddballClock)
         tThisFlipGlobal = win.getFutureFlipTime(clock=None)
         frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
         # update/draw components on each frame
+        
+        # *text_* updates
+        if text_.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            text_.frameNStart = frameN  # exact frame index
+            text_.tStart = t  # local t and not account for scr refresh
+            text_.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(text_, 'tStartRefresh')  # time at next scr refresh
+            text_.setAutoDraw(True)
+        if text_.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > text_.tStartRefresh + text_duration-frameTolerance:
+                # keep track of stop time/frame for later
+                text_.tStop = t  # not accounting for scr refresh
+                text_.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(text_, 'tStopRefresh')  # time at next scr refresh
+                text_.setAutoDraw(False)
+        if text_.status == STARTED:  # only update if drawing
+            text_.setText(rune
+, log=False)
         
         # *image* updates
         if image.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
@@ -378,7 +408,7 @@ for thisTrial in trials:
             image.setAutoDraw(True)
         if image.status == STARTED:
             # is it time to stop? (based on global clock, using actual start)
-            if tThisFlipGlobal > image.tStartRefresh + 1.0-frameTolerance:
+            if tThisFlipGlobal > image.tStartRefresh + 0-frameTolerance:
                 # keep track of stop time/frame for later
                 image.tStop = t  # not accounting for scr refresh
                 image.frameNStop = frameN  # exact frame index
@@ -414,7 +444,7 @@ for thisTrial in trials:
                 key_resp.rt = _key_resp_allKeys[-1].rt
         
         # *blank_screen* updates
-        if blank_screen.status == NOT_STARTED and tThisFlip >= 1.0-frameTolerance:
+        if blank_screen.status == NOT_STARTED and tThisFlip >= text_duration-frameTolerance:
             # keep track of start time/frame for later
             blank_screen.frameNStart = frameN  # exact frame index
             blank_screen.tStart = t  # local t and not account for scr refresh
@@ -423,7 +453,7 @@ for thisTrial in trials:
             blank_screen.setAutoDraw(True)
         if blank_screen.status == STARTED:
             # is it time to stop? (based on global clock, using actual start)
-            if tThisFlipGlobal > blank_screen.tStartRefresh + 0.1-frameTolerance:
+            if tThisFlipGlobal > blank_screen.tStartRefresh + x-frameTolerance:
                 # keep track of stop time/frame for later
                 blank_screen.tStop = t  # not accounting for scr refresh
                 blank_screen.frameNStop = frameN  # exact frame index
@@ -451,6 +481,9 @@ for thisTrial in trials:
     for thisComponent in oddballComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
+    thisExp.addData('text_duration', text_duration)
+    trials.addData('text_.started', text_.tStartRefresh)
+    trials.addData('text_.stopped', text_.tStopRefresh)
     trials.addData('image.started', image.tStartRefresh)
     trials.addData('image.stopped', image.tStopRefresh)
     # check responses
@@ -463,9 +496,11 @@ for thisTrial in trials:
     trials.addData('key_resp.stopped', key_resp.tStopRefresh)
     trials.addData('blank_screen.started', blank_screen.tStartRefresh)
     trials.addData('blank_screen.stopped', blank_screen.tStopRefresh)
+    # the Routine "oddball" was not non-slip safe, so reset the non-slip timer
+    routineTimer.reset()
     thisExp.nextEntry()
     
-# completed 2.0 repeats of 'trials'
+# completed 10.0 repeats of 'trials'
 
 
 # Flip one final time so any remaining win.callOnFlip() 
