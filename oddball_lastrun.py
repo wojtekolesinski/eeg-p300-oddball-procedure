@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 This experiment was created using PsychoPy3 Experiment Builder (v2021.2.3),
-    on Tue Jan 11 16:12:38 2022
+    on Thu Jan 13 19:25:56 2022
 If you publish work using this script the most relevant publication is:
 
     Peirce J, Gray JR, Simpson S, MacAskill M, Höchenberger R, Sogo H, Kastman E, Lindeløv JK. (2019) 
@@ -348,8 +348,8 @@ for thisTrial in trials:
     # update component parameters for each repeat
     from numpy.random import uniform
     
-    text_duration = uniform() * .3
-    x = .8 + uniform() * .5
+    text_duration = .05 + uniform() * .1
+    x = 1.3 + uniform() * .5
     image.setImage(photo)
     key_resp.keys = []
     key_resp.rt = []
